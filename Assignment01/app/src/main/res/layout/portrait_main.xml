@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_portrait"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/background" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bouldering Score Counter"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_gravity="top|center_horizontal"
+            android:paddingTop="32dp"/>
+
+        <TextView
+            android:id="@+id/tileScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:textSize="64sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:layout_marginBottom="180dp" />
+
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="56sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:layout_marginBottom="100dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="450dp">
+
+            <TextView
+                android:id="@+id/holdTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hold: "
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/holdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/climbBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:backgroundTint="#1B5E20"
+                android:gravity="center"
+                android:text="↑\nClimb"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="5dp" />
+
+            <Button
+                android:id="@+id/fallBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:backgroundTint="#8B0000"
+                android:gravity="center"
+                android:text="↓\nFall"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center|end"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/resetBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:backgroundTint="#333333"
+                android:gravity="center"
+                android:text="Reset"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="5dp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/startStopBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="START SESSION"
+                android:backgroundTint="#2196F3"
+                android:textColor="@android:color/white"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="32dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="6dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/langLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change to Vietnamese"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/switchLangBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/vn_rounded"
+                    app:srcCompat="@drawable/vn_flag" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
