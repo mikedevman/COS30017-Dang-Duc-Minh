@@ -1,5 +1,7 @@
 package com.example.cos20031
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -18,13 +20,16 @@ class AdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_admin)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        txtAdmin = findViewById(R.id.txtAdmin)
+        btnExit = findViewById(R.id.btnExit)
 
         val username = intent.getStringExtra("Username")
 
@@ -38,6 +43,10 @@ class AdminActivity : AppCompatActivity() {
 
         btnExit.setOnClickListener {
             Log.d("AdminActivity", "Exit button clicked. Finishing AdminActivity.")
+
+            val returnIntent = Intent()
+            returnIntent.putExtra("Test1", "Data from AdminActivity")
+            setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }
     }
