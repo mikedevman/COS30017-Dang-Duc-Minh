@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "COS30017"
+rootProject.name = "Assignment2"
 include(":app")
  

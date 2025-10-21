@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var startStopBtn: Button
     private lateinit var langLabel: TextView
     private lateinit var switchLangBtn: ImageView
+    private lateinit var langSwitcher: SwitchLang
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,18 @@ class MainActivity : AppCompatActivity() {
         langLabel = findViewById(R.id.langLabel)
         switchLangBtn = findViewById(R.id.switchLangBtn)
 
+        langSwitcher = SwitchLang(
+            titleText,
+            tileScore,
+            holdTitle,
+            climbBtn,
+            fallBtn,
+            resetBtn,
+            startStopBtn,
+            langLabel,
+            switchLangBtn
+        )
+
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt("score")
             currentHold = savedInstanceState.getInt("currentHold")
@@ -67,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         updateScoreDisplay()
         updateButtonState()
-        updateLanguageTexts()
+        langSwitcher.update(isEnglish, sessionActive)
 
         climbBtn.setOnClickListener { climb() }
         fallBtn.setOnClickListener { fall() }
@@ -95,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         isEnglish = savedInstanceState.getBoolean("isEnglish")
         updateScoreDisplay()
         updateButtonState()
-        updateLanguageTexts()
+        langSwitcher.update(isEnglish, sessionActive)
         Log.d("MainActivity", "State restored via onRestoreInstanceState: score=$score, hold=$currentHold, sessionActive=$sessionActive, isEnglish=$isEnglish")
     }
 
@@ -108,11 +121,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun toggleLanguage() {
+        isEnglish = !isEnglish
+        langSwitcher.update(isEnglish, sessionActive)
+        Log.d("MainActivity", "Language changed. isEnglish=$isEnglish")
+    }
+
     private fun toggleSession() {
         sessionActive = !sessionActive
         if (sessionActive) reset()
         updateButtonState()
-        updateLanguageTexts()
+        langSwitcher.update(isEnglish, sessionActive)
         Log.d("MainActivity", "Session toggled. Active: $sessionActive")
     }
 
@@ -169,35 +188,5 @@ class MainActivity : AppCompatActivity() {
         }
         scoreText.setTextColor(color)
         holdText.setTextColor(color)
-    }
-
-    private fun toggleLanguage() {
-        isEnglish = !isEnglish
-        updateLanguageTexts()
-        Log.d("MainActivity", "Language changed. isEnglish=$isEnglish")
-    }
-
-    private fun updateLanguageTexts() {
-        if (isEnglish) {
-            titleText.text = "Bouldering Score Counter"
-            tileScore.text = "Score"
-            holdTitle.text = "Hold: "
-            climbBtn.text = "↑\nClimb"
-            fallBtn.text = "↓\nFall"
-            resetBtn.text = "Reset"
-            startStopBtn.text = if (sessionActive) "END SESSION" else "START SESSION"
-            langLabel.text = "Change to Vietnamese"
-            switchLangBtn.setImageResource(R.drawable.vn_flag)
-        } else {
-            titleText.text = "Bộ Đếm Điểm Leo Núi"
-            tileScore.text = "Điểm"
-            holdTitle.text = "Khối Đá: "
-            climbBtn.text = "↑\nLeo"
-            fallBtn.text = "↓\nNgã"
-            resetBtn.text = "Đặt Lại"
-            startStopBtn.text = if (sessionActive) "KẾT THÚC" else "BẮT ĐẦU"
-            langLabel.text = "Chuyển sang Tiếng Anh"
-            switchLangBtn.setImageResource(R.drawable.en_flag)
-        }
     }
 }
