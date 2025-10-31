@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".CheckoutActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/checkoutTitle"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:background="?attr/colorPrimary"
+            android:backgroundTint="#4B0082"
+            android:gravity="center_horizontal|bottom"
+            android:padding="16dp"
+            android:text="Confirm Your Choice"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/guitarImage"
+            android:layout_width="160dp"
+            android:layout_height="421dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutTitle"
+            tools:src="@drawable/cory" />
+
+        <TextView
+            android:id="@+id/guitarDescriptionText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/guitarImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guitarImage"
+            app:layout_constraintTop_toTopOf="@id/guitarImage"
+            tools:text="description" />
+
+        <TextView
+            android:id="@+id/guitarNameText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guitarImage"
+            tools:text="Guitar Name" />
+
+        <TextView
+            android:id="@+id/priceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Price:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/guitarNameText"
+            app:layout_constraintTop_toBottomOf="@id/guitarNameText" />
+
+        <TextView
+            android:id="@+id/priceText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/priceLabel"
+            app:layout_constraintEnd_toEndOf="@id/guitarNameText"
+            app:layout_constraintStart_toEndOf="@id/priceLabel"
+            tools:text="0 Credits" />
+
+        <TextView
+            android:id="@+id/creditBalanceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Your Balance:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/priceLabel"
+            app:layout_constraintTop_toBottomOf="@id/priceLabel" />
+
+        <TextView
+            android:id="@+id/creditBalanceText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/creditBalanceLabel"
+            app:layout_constraintEnd_toEndOf="@id/priceText"
+            app:layout_constraintStart_toEndOf="@id/creditBalanceLabel"
+            tools:text="0 Credits" />
+
+        <TextView
+            android:id="@+id/accessoriesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:text="Included Accessories:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/creditBalanceLabel"
+            app:layout_constraintTop_toBottomOf="@id/creditBalanceLabel" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/accessoriesChipGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/guitarNameText"
+            app:layout_constraintStart_toStartOf="@id/accessoriesLabel"
+            app:layout_constraintTop_toBottomOf="@id/accessoriesLabel">
+        </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/confirmBorrowButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#4B0082"
+            android:text="Confirm and Borrow"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/guitarNameText"
+            app:layout_constraintStart_toStartOf="@id/guitarNameText"
+            app:layout_constraintTop_toBottomOf="@id/accessoriesChipGroup" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@id/confirmBorrowButton"
+            app:layout_constraintStart_toStartOf="@id/confirmBorrowButton"
+            app:layout_constraintTop_toBottomOf="@id/confirmBorrowButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,21 +1,24 @@
 package com.example.cos30017
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdgeimport androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.FileOutputStream
-import java.lang.Exception
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
-
-    // 1. Declare variables as class properties
-    private lateinit var txtInfor: EditText
-    private lateinit var writeButton: Button
-
+    lateinit var txtDisplay: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,36 +28,47 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        txtInfor = findViewById(R.id.txtInfor)
-        writeButton = findViewById(R.id.write)
-
-        writeButton.setOnClickListener {
-            save()
-        }
+        txtDisplay = findViewById(R.id.txtDisplay)
+        callThread()
     }
 
-    // 2. Move the save() function outside of onCreate()
-    private fun save() {
-        val fileName = "test.txt"
-        val data = txtInfor.text.toString()
+    suspend fun Thread1(): String {
+        Log.d("T1", "Start Thread 1")
+        delay(1700)
+        Log.d("T1", "finish Thread 1")
+        return "Thread 1"
+    }
 
-        if (data.isEmpty()) {
-            Toast.makeText(this, "Please enter some text", Toast.LENGTH_SHORT).show()
-            return
-        }
+    suspend fun Thread2(): String {
+        Log.d("T2", "Start Thread 2")
+        delay(1000)
+        Log.d("T2", "finish Thread 2")
+        return "Thread 2"
+    }
 
-        var fileOutputStream: FileOutputStream? = null
-        try {
-            fileOutputStream = openFileOutput(fileName, MODE_PRIVATE)
-            fileOutputStream.write(data.toByteArray())
-            Toast.makeText(this, "Saved to $fileName", Toast.LENGTH_LONG).show()
-            txtInfor.text.clear()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error saving file", Toast.LENGTH_LONG).show()
-        } finally {
-            fileOutputStream?.close()
+    fun callThread() {
+        CoroutineScope(IO).launch {
+            val executionTime = measureTimeMillis {
+                val job1: Deferred<String> = async {
+                    Thread1()
+                }
+                val job2: Deferred<String> = async {
+                    Thread2()
+                }
+                val result1 = job1.await()
+                val result2 = job2.await()
+                val result = "$result1 + $result2"
+
+                Log.d("T1", "Result: $result")
+
+                withContext(Main) {
+                    txtDisplay.text = "Result: $result"
+                }
+            }
+            Log.d("T1", "Execute time: ${executionTime}ms")
+            withContext(Main) {
+                txtDisplay.append("\nExecution time: ${executionTime}ms")
+            }
         }
     }
 }
