@@ -36,6 +36,7 @@ import kotlinx.parcelize.Parcelize
 import android.widget.LinearLayout
 import android.util.Log
 
+// data class for a guitar, making it parcelable to pass between activities
 @Parcelize
 data class Guitar(
     val name: String,
@@ -49,7 +50,7 @@ data class Guitar(
 
 class MainActivity : AppCompatActivity() {
 
-    private var credits = Credits(999)
+    private var credits = Credits(999999)
     private lateinit var userButton: Button
     private lateinit var guitars: MutableList<Guitar>
     private var borrowHistory = mutableListOf<Guitar>()
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
+    // handles the result from checkoutactivity
     private val checkoutLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val updatedGuitar = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -72,18 +74,18 @@ class MainActivity : AppCompatActivity() {
 
             if (updatedGuitar != null && newBalance != null && newBalance != -1) {
                 credits.balance = newBalance
-                Log.d(TAG, "Adding ${updatedGuitar.name} to borrow history.")
                 borrowHistory.add(updatedGuitar)
 
-                val indexToUpdate = guitars.indexOfFirst { it.name == updatedGuitar.name }
-                if (indexToUpdate != -1) {
-                    guitars[indexToUpdate] = updatedGuitar
-                    findViewById<RatingBar>(getRatingBarId(indexToUpdate)).rating = updatedGuitar.rating
+                val indexGuitar = guitars.indexOfFirst { it.name == updatedGuitar.name }
+                if (indexGuitar != -1) {
+                    guitars[indexGuitar] = updatedGuitar
+                    findViewById<RatingBar>(getRatingBarId(indexGuitar)).rating = updatedGuitar.rating
                 }
             }
         }
     }
 
+    // saves the app's state before it's destroyed
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList("GUITARS_STATE", ArrayList(guitars))
@@ -93,9 +95,11 @@ class MainActivity : AppCompatActivity() {
         outState.putInt("SELECTED_CARD_STATE", selectedCardIndex)
     }
 
+    // called when the activity is first created or recreated
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // check if state is being restored from an intent (e.g., location change)
         if (intent.hasExtra("GUITARS_STATE")) {
             currentRegion = intent.getStringExtra("SELECTED_REGION") ?: "USA"
             selectedCardIndex = intent.getIntExtra("SELECTED_CARD_STATE", 0)
@@ -105,8 +109,8 @@ class MainActivity : AppCompatActivity() {
             intent.getParcelableArrayListExtra<Guitar>("HISTORY_STATE")?.let {
                 borrowHistory = it.toMutableList()
             }
+            // check if state is being restored from a saved instance state (e.g., rotation)
         } else if (savedInstanceState != null) {
-            Log.d(TAG, "Restoring state from savedInstanceState (orientation change).")
             credits.balance = savedInstanceState.getInt("CREDITS_STATE")
             currentRegion = savedInstanceState.getString("REGION_STATE", "USA")
             selectedCardIndex = savedInstanceState.getInt("SELECTED_CARD_STATE")
@@ -116,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             savedInstanceState.getParcelableArrayList<Guitar>("HISTORY_STATE")?.let {
                 borrowHistory = it.toMutableList()
             }
+            // handle initial app launch
         } else {
             intent.getStringExtra("SELECTED_REGION")?.let {
                 currentRegion = it
@@ -125,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         updateLayoutForRegion()
     }
 
+    // sets the correct layout file based on region and orientation, then initializes the UI
     private fun updateLayoutForRegion() {
         val orientation = resources.configuration.orientation
         val layoutId = when {
@@ -145,9 +151,9 @@ class MainActivity : AppCompatActivity() {
         guitarCards()
     }
 
+    // creates and displays the dialog with user credits and borrow history
     private fun showUserInfoDialog() {
         val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
 
         val orientation = resources.configuration.orientation
@@ -185,7 +191,6 @@ class MainActivity : AppCompatActivity() {
                 val accessories = "  - Accessories: ${guitar.accessories.joinToString(", ")}\n"
 
                 history.append(name)
-                history.setSpan(StyleSpan(android.graphics.Typeface.BOLD), history.length - name.length, history.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 history.append(time)
                 history.append(rating)
                 history.append(accessories)
@@ -203,6 +208,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // helper function to get ratingbar id based on guitar index
     private fun getRatingBarId(index: Int): Int {
         return when (index) {
             0 -> R.id.ratingBlack1
@@ -213,7 +219,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // initializes guitar data and sets up listeners for all cards and buttons
     private fun guitarCards() {
+        // initialize the guitars list only once
         if (!::guitars.isInitialized) {
             guitars = mutableListOf(
                 Guitar(
@@ -222,10 +230,7 @@ class MainActivity : AppCompatActivity() {
                     R.drawable.black1,
                     "Inspired by John Mayer’s legendary tone, the Black1 delivers smooth vintage warmth, expressive mids, and the soulful sound that defined his iconic blues style.",
                     0f,
-                    listOf(
-                        "Fender Hard Case",
-                        "Ernie Ball Silver Slinky Electric Guitar String Set"
-                    )
+                    listOf("Fender Hard Case", "Ernie Ball Silver Slinky Electric Guitar String Set")
                 ),
                 Guitar(
                     "Fender Cory Wong Stratocaster",
@@ -255,18 +260,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         val buttonIds = listOf(R.id.borrowBlack1, R.id.borrowCory, R.id.borrowSrv, R.id.borrowGovan)
-        val ratingBarIds =
-            listOf(R.id.ratingBlack1, R.id.ratingCory, R.id.ratingSrv, R.id.ratingGovan)
+        val ratingBarIds = listOf(R.id.ratingBlack1, R.id.ratingCory, R.id.ratingSrv, R.id.ratingGovan)
         val orientation = resources.configuration.orientation
         val isHorizontal = orientation == Configuration.ORIENTATION_LANDSCAPE
         val cardIds = listOf(R.id.black1, R.id.cory, R.id.srv, R.id.govan)
 
         guitars.forEachIndexed { index, guitar ->
             findViewById<Button>(buttonIds[index]).setOnClickListener {
+                // in landscape, only allow borrowing the selected card
                 if (isHorizontal && selectedCardIndex != index) {
                     return@setOnClickListener
                 }
-                guitar.borrowedDate = System.currentTimeMillis()
                 val intent = Intent(this, CheckoutActivity::class.java).apply {
                     putExtra("GUITAR_EXTRA", guitar)
                     putExtra("USER_BALANCE_EXTRA", credits.balance)
@@ -279,22 +283,22 @@ class MainActivity : AppCompatActivity() {
             ratingBar.rating = guitar.rating
             ratingBar.setOnRatingBarChangeListener { _, rating, fromUser ->
                 if (fromUser) {
-                    Log.d(TAG, "Rating updated for ${guitar.name} to $rating.")
                     guitars[index].rating = rating
                 }
             }
         }
 
         if (isHorizontal) {
+            // in landscape, clicking a card selects it
             cardIds.forEachIndexed { index, cardId ->
                 findViewById<View>(cardId).setOnClickListener {
-                    Log.d(TAG, "Current card index: $index")
                     selectedCardIndex = index
                     updateCardSelection()
                 }
             }
             cardSelection()
         } else {
+            // in portrait, set up button-based scrolling
             val cards = listOf<View>(
                 findViewById(R.id.black1),
                 findViewById(R.id.cory),
@@ -308,27 +312,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // handles the logic for the horizontal card carousel in portrait mode
     private fun horizontalScrolling(cards: List<View>) {
         val mainScroll: HorizontalScrollView = findViewById(R.id.mainScroll)
         val nextButton: Button = findViewById(R.id.nextButton)
         val prevButton: Button = findViewById(R.id.prevButton)
 
+        // disable direct touch scrolling
         mainScroll.setOnTouchListener { _, _ -> true }
 
         fun scrollToCard(index: Int) {
             val card = cards.getOrNull(index)
             card?.let {
+                // calculates the scroll position needed to center the card
                 val cardCenter = it.left + (it.width / 2)
                 val scrollCenter = mainScroll.width / 2
                 mainScroll.smoothScrollTo(cardCenter - scrollCenter, 0)
             }
         }
-        Log.d(TAG, "Horizontal scroll: Restoring card position to index $selectedCardIndex.")
+
+        // scrolls to the currently selected card after the layout is drawn
         mainScroll.post { scrollToCard(selectedCardIndex) }
 
         nextButton.setOnClickListener {
             if (selectedCardIndex < cards.size - 1) {
-                Log.d(TAG, "Next button clicked. Index: $selectedCardIndex -> ${selectedCardIndex + 1}.")
                 selectedCardIndex++
                 scrollToCard(selectedCardIndex)
             }
@@ -336,20 +343,19 @@ class MainActivity : AppCompatActivity() {
 
         prevButton.setOnClickListener {
             if (selectedCardIndex > 0) {
-                Log.d(TAG, "Previous button clicked. Index: $selectedCardIndex -> ${selectedCardIndex - 1}.")
                 selectedCardIndex--
                 scrollToCard(selectedCardIndex)
             }
         }
     }
 
-
-
+    // handles the logic for vertical card scrolling in portrait mode
     private fun verticalScrolling(cards: List<View>) {
         val mainScroll: ScrollView = findViewById(R.id.mainScroll)
         val nextButton: Button = findViewById(R.id.nextButton)
         val prevButton: Button = findViewById(R.id.prevButton)
 
+        // disable direct touch scrolling
         mainScroll.setOnTouchListener { _, _ -> true }
 
         fun scrollToCard(index: Int) {
@@ -358,12 +364,11 @@ class MainActivity : AppCompatActivity() {
                 mainScroll.smoothScrollTo(0, it.top)
             }
         }
-        Log.d(TAG, "Vertical scroll: Restoring card position to index $selectedCardIndex.")
+
         mainScroll.post { scrollToCard(selectedCardIndex) }
 
         nextButton.setOnClickListener {
             if (selectedCardIndex < cards.size - 1) {
-                Log.d(TAG, "Next button clicked. Index: $selectedCardIndex -> ${selectedCardIndex + 1}.")
                 selectedCardIndex++
                 scrollToCard(selectedCardIndex)
             }
@@ -371,14 +376,13 @@ class MainActivity : AppCompatActivity() {
 
         prevButton.setOnClickListener {
             if (selectedCardIndex > 0) {
-                Log.d(TAG, "Previous button clicked. Index: $selectedCardIndex -> ${selectedCardIndex - 1}.")
                 selectedCardIndex--
                 scrollToCard(selectedCardIndex)
             }
         }
     }
 
-
+    // handles next/previous button logic for landscape mode card selection
     private fun cardSelection() {
         updateCardSelection()
         val nextButton: Button? = findViewById(R.id.nextButton)
@@ -386,7 +390,6 @@ class MainActivity : AppCompatActivity() {
 
         nextButton?.setOnClickListener {
             if (selectedCardIndex < guitars.size - 1) {
-                Log.d(TAG, "Next button clicked. Index: $selectedCardIndex -> ${selectedCardIndex + 1}.")
                 selectedCardIndex++
                 updateCardSelection()
             }
@@ -394,64 +397,58 @@ class MainActivity : AppCompatActivity() {
 
         prevButton?.setOnClickListener {
             if (selectedCardIndex > 0) {
-                Log.d(TAG, "Previous button clicked. Index: $selectedCardIndex -> ${selectedCardIndex - 1}.")
                 selectedCardIndex--
                 updateCardSelection()
             }
         }
     }
 
+    // visually updates the selected card in landscape with a border
     private fun updateCardSelection() {
         val cardIds = listOf(R.id.black1, R.id.cory, R.id.srv, R.id.govan)
-        val buttonIds = listOf(R.id.borrowBlack1, R.id.borrowCory, R.id.borrowSrv, R.id.borrowGovan)
-        val selectedColor = if (currentRegion == "USA") Color.parseColor("#4B0082") else Color.parseColor("#3F51B5")
-        val unselectedColor = Color.parseColor("#888888")
+        val selectedDrawable = if (currentRegion == "USA") R.drawable.selected_card_usa else R.drawable.selected_card_uae
 
         cardIds.forEachIndexed { index, cardId ->
-            val card = findViewById<LinearLayout>(cardId)
-            val button = findViewById<Button>(buttonIds[index])
-
+            val cardView = findViewById<View>(cardId)
             if (index == selectedCardIndex) {
-                val selectedDrawable = if (currentRegion == "USA") R.drawable.selected_card_usa else R.drawable.selected_card_uae
-                card.setBackgroundResource(selectedDrawable)
-                button.backgroundTintList = ColorStateList.valueOf(selectedColor)
+                cardView.setBackgroundResource(selectedDrawable)
             } else {
-                card.setBackgroundResource(R.drawable.unselected_card)
-                button.backgroundTintList = ColorStateList.valueOf(unselectedColor)
+                cardView.setBackgroundColor(Color.parseColor("#CCFFFFFF"))
             }
         }
     }
 
+    // sets up the spinner for changing location
     private fun setupLocationSpinner() {
-        val locationSpinner: Spinner = findViewById(R.id.location_spinner)
+        val spinner: Spinner = findViewById(R.id.location_spinner)
         val locations = arrayOf("USA", "UAE")
         val adapter = ArrayAdapter(this, R.layout.spinner_item_layout, locations)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        locationSpinner.adapter = adapter
-        locationSpinner.setSelection(locations.indexOf(currentRegion))
+        spinner.adapter = adapter
 
-        locationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedRegion = locations[position]
+        spinner.setSelection(locations.indexOf(currentRegion))
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedRegion = parent.getItemAtPosition(position).toString()
+                // restart the activity with new state if the region changes
                 if (selectedRegion != currentRegion) {
-                    Log.d(TAG, "Changing location to $selectedRegion.")
                     val intent = Intent(this@MainActivity, MainActivity::class.java).apply {
                         putExtra("SELECTED_REGION", selectedRegion)
-                        if (::guitars.isInitialized) {
-                            putExtra("GUITARS_STATE", ArrayList(guitars))
-                            putExtra("HISTORY_STATE", ArrayList(borrowHistory))
-                            putExtra("CREDITS_STATE", credits.balance)
-                            putExtra("SELECTED_CARD_STATE", selectedCardIndex)
-                        }
+                        putExtra("SELECTED_CARD_STATE", selectedCardIndex)
+                        putParcelableArrayListExtra("GUITARS_STATE", ArrayList(guitars))
+                        putParcelableArrayListExtra("HISTORY_STATE", ArrayList(borrowHistory))
                     }
                     startActivity(intent)
                     finish()
                 }
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
+    // handles window insets for edge-to-edge display
     private fun windowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
