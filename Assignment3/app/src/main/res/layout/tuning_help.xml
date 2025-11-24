@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ok"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:background="?attr/colorPrimary"
+                android:backgroundTint="#061626"
+                android:fontFamily="@font/jersey25_regular"
+                android:gravity="center_horizontal|bottom"
+                android:padding="16dp"
+                android:text="How to Tune"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/instrumentImage"
+                android:layout_width="160dp"
+                android:layout_height="421dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/instrumentInfo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/jersey25_regular"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/instrumentImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/instrumentImage"
+                app:layout_constraintTop_toTopOf="@id/instrumentImage"
+                tools:text="description" />
+
+            <TextView
+                android:id="@+id/guideInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/jersey25_regular"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/instrumentImage"
+                android:text="Begin by selecting the correct tuning for your instrument in the application and minimizing background noise for the most accurate microphone reading. The display shows all the notes in your selected tuning. You can tap on any specific note in the list to instantly see a pop-up that displays its exact correct frequency (in Hz). This pop-up will also advise you on how many cents are left to tune up or down by comparing the correct pitch to the last sound the microphone picked up.\n\nWhen you play a note, the center screen instantly updates with the large note name and the measured pitch frequency (Hz). And then, use the precise cents display to see how close you are to the correct frequency. A positive number (e.g., +10) means your note is sharp (too high), and you must decrease the pitch to tune down. A negative number (e.g., -10) means your note is flat (too low), requiring you to increase the pitch to tune up.\n\nThe final objective is to reach zero cents. Our tuner considers a note to be in tune when the deviation is within 2.0 cents of the perfect pitch. When this range is successfully reached, the corresponding note's text or indicator on the screen will turn green, indicating that the note is in tune." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#061626"
+        android:fontFamily="@font/jersey25_regular"
+        android:text="Okay!"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
