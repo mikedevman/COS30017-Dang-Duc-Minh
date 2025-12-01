@@ -1,4 +1,4 @@
-com.example.tutoriallightmeupapp
+com.example.calculator
 anim abc_fade_in
 anim abc_fade_out
 anim abc_grow_fade_in_from_bottom
@@ -3636,8 +3636,6 @@ drawable mtrl_switch_thumb_unchecked_pressed
 drawable mtrl_switch_track
 drawable mtrl_switch_track_decoration
 drawable mtrl_tabs_default_indicator
-drawable music_note
-drawable music_off
 drawable navigation_empty_icon
 drawable notification_action_background
 drawable notification_bg
@@ -3890,6 +3888,8 @@ id immediateStop
 id included
 id indeterminate
 id info
+id input_a
+id input_b
 id invisible
 id inward
 id italic
@@ -3936,6 +3936,7 @@ id matrix
 id message
 id middle
 id mini
+id minus
 id month_grid
 id month_navigation_bar
 id month_navigation_fragment_toggle
@@ -4022,6 +4023,7 @@ id pathRelative
 id peekHeight
 id percent
 id pin
+id plus
 id position
 id postLayout
 id pressed
@@ -4031,6 +4033,7 @@ id radio
 id ratio
 id rectangles
 id report_drawn
+id result
 id retreat
 id reverseSawtooth
 id right
@@ -4100,6 +4103,7 @@ id stop
 id stretch
 id submenuarrow
 id submit_area
+id subtract
 id supportScrollUp
 id tabMode
 id tag_accessibility_actions
@@ -4164,7 +4168,6 @@ id view_offset_helper
 id view_transition
 id view_tree_disjoint_parent
 id view_tree_lifecycle_owner
-id view_tree_navigation_event_dispatcher_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
@@ -4642,6 +4645,7 @@ style Base_Theme_AppCompat_Light_Dialog_Alert
 style Base_Theme_AppCompat_Light_Dialog_FixedSize
 style Base_Theme_AppCompat_Light_Dialog_MinWidth
 style Base_Theme_AppCompat_Light_DialogWhenLarge
+style Base_Theme_Calculator
 style Base_Theme_Material3_Dark
 style Base_Theme_Material3_Dark_BottomSheetDialog
 style Base_Theme_Material3_Dark_Dialog
@@ -4673,7 +4677,6 @@ style Base_Theme_MaterialComponents_Light_Dialog_Bridge
 style Base_Theme_MaterialComponents_Light_Dialog_FixedSize
 style Base_Theme_MaterialComponents_Light_Dialog_MinWidth
 style Base_Theme_MaterialComponents_Light_DialogWhenLarge
-style Base_Theme_TutorialLightMeUpApp
 style Base_ThemeOverlay_AppCompat
 style Base_ThemeOverlay_AppCompat_ActionBar
 style Base_ThemeOverlay_AppCompat_Dark
@@ -5168,6 +5171,7 @@ style Theme_AppCompat_Light_Dialog_MinWidth
 style Theme_AppCompat_Light_DialogWhenLarge
 style Theme_AppCompat_Light_NoActionBar
 style Theme_AppCompat_NoActionBar
+style Theme_Calculator
 style Theme_Design
 style Theme_Design_BottomSheetDialog
 style Theme_Design_Light
@@ -5251,7 +5255,6 @@ style Theme_MaterialComponents_Light_NoActionBar
 style Theme_MaterialComponents_Light_NoActionBar_Bridge
 style Theme_MaterialComponents_NoActionBar
 style Theme_MaterialComponents_NoActionBar_Bridge
-style Theme_TutorialLightMeUpApp
 style ThemeOverlay_AppCompat
 style ThemeOverlay_AppCompat_ActionBar
 style ThemeOverlay_AppCompat_Dark

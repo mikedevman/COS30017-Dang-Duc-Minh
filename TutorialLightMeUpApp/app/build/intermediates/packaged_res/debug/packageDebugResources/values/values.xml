@@ -2,10 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <string name="app_name">Tutorial Light Me Up App</string>
-    <style name="Base.Theme.TutorialLightMeUpApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <string name="app_name">Calculator</string>
+    <style name="Base.Theme.Calculator" parent="Theme.Material3.DayNight.NoActionBar">
         
         
     </style>
-    <style name="Theme.TutorialLightMeUpApp" parent="Base.Theme.TutorialLightMeUpApp"/>
+    <style name="Theme.Calculator" parent="Base.Theme.Calculator"/>
 </resources>

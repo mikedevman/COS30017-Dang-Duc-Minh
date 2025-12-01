@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.tutoriallightmeupapp-mergeDebugResources-34:/values-da/values-da.xml",
+            "outputFile": "com.example.calculator.app-mergeDebugResources-33:/values-da/values-da.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Admin\\.gradle\\caches\\8.13\\transforms\\0fc0babc0ed2bb7de373ac9b837c9007\\transformed\\core-1.17.0\\res\\values-da\\values-da.xml",
